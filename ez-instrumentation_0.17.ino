@@ -560,7 +560,6 @@ void fileSystemCheck()
   else
   {
     Serial.println("SPIFFS Mount failed");
-    //addLog(LOG_LEVEL_INFO, log);
   }
 }
 
@@ -608,7 +607,6 @@ void loop() {
     reconnect();
   }
 
-
  // call sensors.requestTemperatures() to issue a global temperature 
   // request to all devices on the bus
   Serial.print("Requesting temperatures...");
@@ -620,33 +618,30 @@ void loop() {
       char ptemp[8];
       float tempC;
       char pTopic[60]={0};
-      //Serial.print(sensors.getDeviceCount());
       // print the device information
-    for (int i = 0; i < sensors.getDeviceCount(); i++)
-      {
+        
+        for (int i = 0; i < sensors.getDeviceCount(); i++)
+        {
       
-      char pTopic[60]={0};
-      bool ok = sensors.getAddress(deviceAddress, i);
-      convAddress(cSensor,deviceAddress);
-      tempC = sensors.getTempC(deviceAddress);
-      dtostrf(tempC,3,1,temp);
+        char pTopic[60]={0};
+        bool ok = sensors.getAddress(deviceAddress, i);
+        convAddress(cSensor,deviceAddress);
+        tempC = sensors.getTempC(deviceAddress);
+        dtostrf(tempC,3,1,temp);
       
-      strcat(pTopic,Settings.Host);
-      strcat(pTopic,"/");
-      strcat(pTopic,cSensor);
-      Serial.print(pTopic);
-      Serial.print(" : ");
-      Serial.println(temp);
-      client.publish(pTopic,temp);
-     // MQTT_Topic(Settings.Host, cSensor, temp, 5);
-      }
+       strcat(pTopic,Settings.Host);
+        strcat(pTopic,"/");
+        strcat(pTopic,cSensor);
+        Serial.print(pTopic);
+        Serial.print(" : ");
+        Serial.println(temp);
+        client.publish(pTopic,temp);
+        }
 
     delay(loop_delay);
  
   client.loop();
-   //Serial.print("Try Byte: "); 
    while (Serial.available () > 0)
-    //Serial.print("Byte: ");
     processIncomingByte (Serial.read ());
-      httpServer.handleClient();
+    httpServer.handleClient();
 }
